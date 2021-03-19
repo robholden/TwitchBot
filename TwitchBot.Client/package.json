@@ -1,0 +1,16 @@
+{
+    "name": "dc.commandhub.client",
+    "author": "FortressGB",
+    "description": "nodejs test client for FortressGB Agent Server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies": {
+        "@microsoft/signalr": "^5.0.2",
+        "axios": "^0.21.1",
+        "colors": "^1.4.0",
+        "yargs-interactive": "^3.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^7.18.0"
+    }
+}
