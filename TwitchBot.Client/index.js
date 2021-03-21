@@ -42,7 +42,7 @@ async function start() {
     const connection = new signalR.HubConnectionBuilder()
         .withUrl(hub_url, { accessTokenFactory: () => data.token })
         .withAutomaticReconnect()
-        .configureLogging(signalR.LogLevel.None)
+        .configureLogging(signalR.LogLevel.Debug)
         .build();
 
     await connection.start();

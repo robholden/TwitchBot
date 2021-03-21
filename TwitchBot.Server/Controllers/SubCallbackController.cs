@@ -2,10 +2,9 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-using TwitchBot.Server.Attributes;
+using TwitchBot.Server.Auth;
 using TwitchBot.Server.Hubs;
 using TwitchBot.Server.Services.Models;
 
@@ -15,13 +14,11 @@ namespace TwitchBot.Server.Controllers
     [Route("sub-callback")]
     public class SubCallbackController : ControllerBase
     {
-        private readonly ILogger<SubCallbackController> _logger;
         private readonly AppSettings _settings;
         private readonly IHubContext<EventHub> _eventHub;
 
-        public SubCallbackController(ILogger<SubCallbackController> logger, IOptions<AppSettings> options, IHubContext<EventHub> eventHub)
+        public SubCallbackController(IOptions<AppSettings> options, IHubContext<EventHub> eventHub)
         {
-            _logger = logger;
             _settings = options.Value;
             _eventHub = eventHub;
         }

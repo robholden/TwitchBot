@@ -6,8 +6,6 @@ namespace TwitchBot.Server
     {
         public string AppUrl { get; set; }
 
-        public string JwtIssuerKey { get; set; }
-
         public IDictionary<string, string> Logins { get; set; }
 
         public string[] SubscriptionTypes { get; set; }
@@ -19,6 +17,8 @@ namespace TwitchBot.Server
         public string EventSubSecret { get; set; }
 
         public BotCredentials BotCredentials { get; set; }
+
+        public string CallbackUrl => $"{ AppUrl }/sub-callback";
     }
 
     public class BotCredentials

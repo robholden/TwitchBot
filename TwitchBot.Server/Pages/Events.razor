@@ -1,0 +1,80 @@
+﻿@page "/{username}/{token}/events/{event}"
+
+@inject NavigationManager navigationManager
+
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Microsoft.EntityFrameworkCore;
+
+@if (_valid == null)
+{
+    <p>Loading</p>
+}
+else if (_valid == false)
+{
+    <p>Failed to connect</p>
+}
+else
+{
+    <p>@Username has connected</p>
+
+    switch (Event)
+    {
+        case "channel.follow":
+            <NewFollower HubConnection="@_hubConnection" Username="@Username" />
+            break;
+    }
+}
+
+@code {
+    [Parameter]
+    public string Username { get; set; }
+
+    [Parameter]
+    public string Token { get; set; }
+
+    [Parameter]
+    public string Event { get; set; }
+
+    private string _message = null;
+    private bool? _valid = null;
+    private HubConnection _hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Verify user
+        using (var db = new TwitchBot.Server.Domain.TwitchBotContext())
+        {
+            var eventToken = await db.EventTokens.FirstOrDefaultAsync(x => x.Token == Token && x.Username == Username);
+            if (eventToken == null)
+            {
+                _valid = false;
+                _message = "Cannot find user";
+                return;
+            }
+
+            await ConnectToHub();
+        }
+    }
+
+    private async Task ConnectToHub()
+    {
+        try
+        {
+            _hubConnection = new HubConnectionBuilder()
+                .WithUrl(navigationManager.BaseUri + "/hubs/event", options =>
+                {
+                    options.AccessTokenProvider = () => Task.FromResult(Token);
+                })
+                .Build();
+
+            await _hubConnection.StartAsync();
+
+            _valid = true;
+        }
+        catch (Exception ex)
+        {
+            _message = ex.Message;
+            _valid = false;
+        }
+    }
+}

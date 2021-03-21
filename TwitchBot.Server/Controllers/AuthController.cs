@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
+using TwitchBot.Server.Auth;
+using TwitchBot.Server.Domain;
 using TwitchBot.Server.Services;
 using TwitchBot.Server.Services.Models;
 
@@ -45,29 +43,29 @@ namespace TwitchBot.Server.Controllers
                 return Unauthorized();
             }
 
+            // Create subscription for user
             var (userId, subscriptions) = await _service.Subscribe(request.Username);
             if (string.IsNullOrEmpty(userId))
             {
                 return NotFound();
             }
 
-            var claims = new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, userId) };
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_settings.JwtIssuerKey));
-            var jwt = new JwtSecurityToken(
-                issuer: "TwitchBot",
-                audience: "Everyone",
-                claims: claims,
-                notBefore: DateTime.UtcNow,
-                expires: DateTime.UtcNow.AddYears(1),
-                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
-            );
-            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            var response = new LoginResponse(token, subscriptions);
+            // Create event token for this user
+            using var db = new TwitchBotContext();
 
+            var eventToken = await db.EventTokens.FirstOrDefaultAsync(x => x.Username == request.Username.ToLower());
+            if (eventToken == null)
+            {
+                eventToken = new(request.Username.ToLower(), userId);
+                await db.AddAsync(eventToken);
+                await db.SaveChangesAsync();
+            }
+
+            var response = new LoginResponse(eventToken.Token, subscriptions);
             return Ok(response);
         }
 
-        [Authorize]
+        [EventAuth]
         [HttpGet("logout")]
         public async Task<ActionResult> Logout()
         {

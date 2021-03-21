@@ -12,7 +12,7 @@ namespace TwitchBot.Server.Services.Models
         {
             Type = type;
             Condition = new() { UserId = userId };
-            Transport = new() { Callback = $"{ settings.AppUrl }/sub-callback", Secret = settings.EventSubSecret };
+            Transport = new() { Callback = settings.CallbackUrl, Secret = settings.EventSubSecret };
         }
 
         [JsonPropertyName("id")]
@@ -20,6 +20,9 @@ namespace TwitchBot.Server.Services.Models
 
         [JsonPropertyName("type")]
         public string Type { get; init; }
+
+        [JsonPropertyName("status")]
+        public string Status { get; init; }
 
         [JsonPropertyName("version")]
         public string Version { get; init; } = "1";

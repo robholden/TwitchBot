@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace TwitchBot.Server.Attributes
+namespace TwitchBot.Server.Auth
 {
     public sealed class TwitchAuthAttribute : TypeFilterAttribute
     {

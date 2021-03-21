@@ -1,0 +1,11 @@
+﻿@using TwitchBot.Server.Models;
+
+@if (Follower != null)
+{
+    <p>@Follower.UserName just followed!</p>
+}
+
+@code {
+    [Parameter]
+    public FollowerEvent Follower { get; set; }
+}  

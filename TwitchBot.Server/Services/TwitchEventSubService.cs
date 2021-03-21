@@ -20,6 +20,8 @@ namespace TwitchBot.Server.Services
     {
         Task<(string userId, IList<Subscription> subscriptions)> Subscribe(string username);
 
+        Task<bool> Unsubscribe(Subscription sub);
+
         Task<bool> Unsubscribe(string userId);
     }
 
@@ -42,6 +44,7 @@ namespace TwitchBot.Server.Services
             var userId = await GetUserId(username);
             if (string.IsNullOrEmpty(userId)) return ("", default);
 
+            // Find which subs we are already subscribed to
             var subs = new List<Subscription>();
             var currentTypes = await CurrentSubscriptions(userId);
             if (currentTypes?.Any() == true)
@@ -68,15 +71,12 @@ namespace TwitchBot.Server.Services
 
         public async Task<bool> Unsubscribe(string userId)
         {
-            // Add authorization headers
-            if (!await AddOAuth()) return default;
-
             try
             {
                 // Loop through each sub and delete
                 foreach (var sub in await CurrentSubscriptions(userId))
                 {
-                    await _client.DeleteAsync("https://api.twitch.tv/helix/eventsub/subscriptions?id=" + sub.Id);
+                    await Unsubscribe(sub);
                 }
 
                 return true;
@@ -84,6 +84,24 @@ namespace TwitchBot.Server.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to deregister subs for user { userId }");
+                return false;
+            }
+        }
+
+        public async Task<bool> Unsubscribe(Subscription sub)
+        {
+            // Add authorization headers
+            if (!await AddOAuth()) return default;
+
+            try
+            {
+                await _client.DeleteAsync("https://api.twitch.tv/helix/eventsub/subscriptions?id=" + sub.Id);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to deregister subs for sub id { sub.Id}");
                 return false;
             }
         }
@@ -113,7 +131,16 @@ namespace TwitchBot.Server.Services
             try
             {
                 var subsResponse = await _client.GetFromJsonAsync<TwitchResponse<Subscription>>("https://api.twitch.tv/helix/eventsub/subscriptions");
-                return subsResponse?.Data?.Where(x => x.Condition?.UserId == userId);
+                var subs = subsResponse?.Data?.Where(x => x.Condition?.UserId == userId)?.ToList();
+
+                // Delete subs with incorrect callback
+                foreach (var sub in subs.Where(x => x.Transport.Callback != _settings.CallbackUrl || x.Status == "webhook_callback_verification_failed").ToList())
+                {
+                    await Unsubscribe(sub);
+                    subs.Remove(sub);
+                }
+
+                return subs;
             }
             catch (Exception ex)
             {

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TwitchBot.Server.Domain;
 
 namespace TwitchBot.Server.Migrations
 {
     [DbContext(typeof(TwitchBotContext))]
-    partial class TwitchBotContextModelSnapshot : ModelSnapshot
+    [Migration("20210321154626_EventTokens")]
+    partial class EventTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

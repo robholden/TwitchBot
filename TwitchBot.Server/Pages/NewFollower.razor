@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client;
+@using TwitchBot.Server.Models;
+
+@if (_connected)
+{
+    switch (Username.ToLower())
+    {
+        case "rob_0":
+            <NewFollowerRob0 Follower="@_follower" />
+            break;
+    }
+}
+else
+{
+    <p>@_message</p>;
+}
+
+@code {
+    [Parameter]
+    public string Username { get; set; }
+
+    [Parameter]
+    public HubConnection HubConnection { get; set; }
+
+    private string _message;
+    private bool _connected;
+    private FollowerEvent _follower;
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            HubConnection.On<FollowerEvent>("channel.follow", HandleNewFollower);
+            _connected = true;
+        }
+        catch (Exception ex)
+        {
+            _message = ex.Message;
+            _connected = false;
+        }
+    }
+
+    private void HandleNewFollower(FollowerEvent evt)
+    {
+        _follower = evt;
+
+        // Inform blazor the UI needs updating
+        StateHasChanged();
+    }
+}
