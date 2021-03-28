@@ -1,0 +1,17 @@
+:host {
+    width: 100%;
+    max-width: 450px;
+}
+
+.form-content {
+    width: 100%;
+    border-radius: var(--br);
+
+    .message {
+        font-size: 1.1em;
+    }
+
+    h2 + .message {
+        font-size: 1em;
+    }
+}

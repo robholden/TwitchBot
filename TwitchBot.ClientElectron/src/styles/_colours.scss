@@ -1,0 +1,39 @@
+[background='primary'] {
+    background-color: var(--primary-bg) !important;
+    color: var(--primary-foreground) !important;
+}
+
+[background='success'] {
+    background-color: var(--success-bg) !important;
+    color: var(--success-foreground) !important;
+}
+
+[background='warning'] {
+    background-color: var(--warning-bg) !important;
+    color: var(--warning-foreground) !important;
+}
+
+[background='danger'] {
+    background-color: var(--danger-bg) !important;
+    color: var(--danger-foreground) !important;
+}
+
+[colour='alt'] {
+    color: var(--foreground-alt) !important;
+}
+
+[colour='primary'] {
+    color: var(--primary-bg) !important;
+}
+
+[colour='success'] {
+    color: var(--success-bg) !important;
+}
+
+[colour='warning'] {
+    color: var(--warning-bg) !important;
+}
+
+[colour='danger'] {
+    color: var(--danger-bg) !important;
+}

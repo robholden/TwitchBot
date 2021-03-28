@@ -8,7 +8,7 @@ namespace TwitchBot.Server
 
         public IDictionary<string, string> Logins { get; set; }
 
-        public string[] SubscriptionTypes { get; set; }
+        public IDictionary<string, string> SubscriptionTypes { get; set; }
 
         public string ClientId { get; set; }
 

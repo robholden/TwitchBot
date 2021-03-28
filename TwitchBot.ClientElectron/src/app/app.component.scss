@@ -1,0 +1,118 @@
+nav {
+    position: relative;
+    background-color: var(--background-alt);
+    padding: 5px;
+    overflow: auto;
+
+    .nav-title {
+        border-bottom: 2px solid var(--background);
+        padding-bottom: 7px;
+        margin-bottom: 7px;
+
+        h3 {
+            color: var(--primary-bg);
+            font-weight: 500;
+        }
+    }
+
+    .version {
+        position: absolute;
+        margin: {
+            top: -5px;
+            left: -5px;
+        }
+        color: rgba(var(--foreground-rgb), 0.4);
+    }
+}
+
+.logo {
+    width: 75px;
+    margin: 25px auto;
+    display: block;
+
+    img {
+        width: 100%;
+    }
+}
+
+.links {
+    a.button,
+    .link {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px 5px;
+        color: var(--foreground);
+        margin-bottom: 5px;
+
+        &:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+
+        i,
+        bot-toggle-switch {
+            display: block;
+            margin-left: auto;
+        }
+
+        select,
+        input:not([type='checkbox']) {
+            width: 100%;
+        }
+    }
+
+    a.link,
+    button.link {
+        &:hover,
+        &.active {
+            background-color: var(--background);
+            border-radius: var(--br);
+            border-color: var(--background-alt);
+        }
+
+        &.active:hover {
+            cursor: default;
+        }
+    }
+
+    label.link {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
+#loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+
+    div {
+        img {
+            transform-origin: center;
+        }
+
+        p {
+            color: var(--foreground);
+        }
+    }
+}
+
+form > div {
+    padding: 1rem;
+    width: 100%;
+    max-width: 350px;
+    border-radius: var(--br);
+    background: var(--background-alt);
+
+    input {
+    }
+}

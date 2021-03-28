@@ -1,0 +1,76 @@
+.form {
+    width: 100%;
+
+    input[type='checkbox'] {
+        position: relative;
+        top: 1px;
+    }
+}
+
+.form-section {
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 0.9em;
+    }
+
+    &:not(.inline) {
+        .input {
+            display: block;
+            width: 100%;
+        }
+    }
+
+    small {
+        display: block;
+        margin-top: 5px;
+        color: var(--danger-bg);
+    }
+}
+
+.input {
+    max-width: 100%;
+    padding: 7px;
+    background-color: var(--background);
+    border: 1.25px solid var(--background);
+    border-radius: var(--br);
+    outline: none;
+    transition: 0.25s ease;
+
+    &.small {
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    &:not(select) {
+        appearance: none;
+    }
+
+    &:not(.real)[readonly] {
+        background-color: var(--background-alt);
+        border-color: var(--background);
+        cursor: not-allowed;
+    }
+
+    &:not([readonly]),
+    &.real {
+        &:not(.clean) {
+            &.has-error,
+            &.ng-invalid:not(.ng-untouched) {
+                border-color: var(--danger-bg);
+            }
+        }
+
+        &:focus {
+            border-color: var(--primary-bg);
+        }
+    }
+
+    &.block {
+        width: 100%;
+    }
+}
+
+select.input {
+    padding-left: 3px;
+}

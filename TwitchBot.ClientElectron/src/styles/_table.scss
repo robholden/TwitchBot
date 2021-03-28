@@ -1,0 +1,38 @@
+table {
+    width: 100%;
+    text-align: left;
+    border-spacing: 0;
+    border-radius: var(--br);
+    overflow: hidden;
+
+    thead {
+        tr {
+            th {
+                padding: 10px;
+                background-color: var(--primary-bg);
+                color: var(--primary-foreground);
+                font-weight: 500;
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            td {
+                background-color: var(--background-alt);
+                padding: 5px 10px;
+                border-bottom: 1px solid var(--background);
+
+                &.editing {
+                    padding: 10px;
+                    border-top: 5px solid var(--background);
+                    border-bottom: 5px solid var(--background);
+                }
+            }
+
+            &:first-child td.editing {
+                border-top: none;
+            }
+        }
+    }
+}

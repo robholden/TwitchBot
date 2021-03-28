@@ -13,7 +13,7 @@
       "commandName": "Project",
       "launchUrl": "sub-callback",
       "environmentVariables": {
-        "AppSettings__AppUrl": "https://64fa59d68e89.ngrok.io",
+        "AppSettings__AppUrl": "https://2cbc10b84177.ngrok.io",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:8999"

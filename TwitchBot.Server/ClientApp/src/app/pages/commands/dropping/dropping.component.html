@@ -1,0 +1,13 @@
+<div class="map-container">
+    <img src="assets/common/warzone_map.png" />
+    <div id="map-overlay">
+        <ng-container *ngFor="let number of numbers">
+            <div class="grid-marker" *ngFor="let letter of letters" [class.active]="coord === letter + number && show" [attr.id]="letter + number">
+                <ng-container *ngIf="coord === letter + number">
+                    <div class="pin"></div>
+                    <div class="pulse"></div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>

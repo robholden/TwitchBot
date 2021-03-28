@@ -21,6 +21,8 @@ namespace TwitchBot.Server.Services.Models
         [JsonPropertyName("type")]
         public string Type { get; init; }
 
+        public string Method { get; set; }
+
         [JsonPropertyName("status")]
         public string Status { get; init; }
 

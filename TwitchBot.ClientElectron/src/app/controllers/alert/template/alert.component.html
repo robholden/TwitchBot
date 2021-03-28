@@ -1,0 +1,42 @@
+<form (submit)="submit()" [formGroup]="form" class="form-content p" background="default">
+    <h2 *ngIf="title">{{ title }}</h2>
+    <div class="message mb" [innerHtml]="message" *ngIf="message"></div>
+
+    <div class="form-section mb" *ngFor="let input of inputs; let i = index">
+        <label [for]="'input-' + i" *ngIf="input.text">
+            {{ input.text }}
+        </label>
+        <label [for]="'input-' + i" *ngIf="input.label" class="small-label">
+            {{ input.label }}
+        </label>
+        <ng-container *ngIf="errors(input.name) as myErrors">
+            <input
+                [id]="'input-' + i"
+                class="input {{ input.className }}"
+                [class.has-error]="myErrors.length > 0 && (form.get(input.name).dirty || form.get(input.name).touched)"
+                [autocomplete]="input.autocomplete || input.type"
+                [type]="input.type"
+                [formControlName]="input.name"
+                [attr.placeholder]="input.placeholder"
+            />
+            <ng-container *ngFor="let error of myErrors">
+                <small class="mt-s" colour="danger" *ngIf="error !== 'Required' && (form.get(input.name).dirty || form.get(input.name).touched)">
+                    {{ error }}
+                </small>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="buttons flex-row-align">
+        <button
+            *ngFor="let btn of buttons"
+            class="button {{ btn.className || '' }}"
+            [attr.background]="btn.colour || 'primary'"
+            [type]="btn.role === 'cancel' ? 'button' : 'submit'"
+            [disabled]="btn.role === 'submit' && form.invalid"
+            (click)="btn.role === 'cancel' ? cancel() : null"
+        >
+            {{ btn.text }}
+        </button>
+    </div>
+</form>

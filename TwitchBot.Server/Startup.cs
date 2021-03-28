@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using TwitchBot.Server.Auth;
 using TwitchBot.Server.Hubs;
-using TwitchBot.Server.Services;
+using TwitchBot.Server.TwitchCode.Chatbot;
+using TwitchBot.Server.TwitchCode.EventSub;
 
 namespace TwitchBot.Server
 {
@@ -22,8 +24,6 @@ namespace TwitchBot.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
             services.AddControllers();
 
             services
@@ -34,11 +34,17 @@ namespace TwitchBot.Server
             services.AddHttpContextAccessor();
             services.AddSignalR();
 
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
+
             // Inject settings
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             // Inject services
             services.AddTransient<ITwitchEventSubService, TwitchEventSubService>();
+            services.AddTransient<ITwitchChatService, TwitchChatService>();
+
+            // Register background tasks
+            services.AddHostedService<TwitchChatTask>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +57,7 @@ namespace TwitchBot.Server
             else
             {
                 app.UseExceptionHandler("/Error");
+                app.UseSpaStaticFiles();
             }
 
             app.UseStaticFiles();
@@ -64,10 +71,18 @@ namespace TwitchBot.Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapHub<EventHub>("/hubs/event");
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
         }
     }

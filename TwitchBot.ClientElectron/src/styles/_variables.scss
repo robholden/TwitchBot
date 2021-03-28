@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css?family=Recursive');
+
+:root {
+    --font-family: 'Recursive', serif;
+    --font-size: 12px;
+    --br: 2px;
+}
+
+body {
+    @media (prefers-color-scheme: dark) {
+        --foreground: #fff;
+        --foreground-alt: #ccc;
+        --foreground-rgb: 225, 225, 225;
+        --background: #222;
+        --background-rgb: 0, 0, 0;
+        --background-alt: #333;
+
+        --primary-bg: #3b7db4;
+        --primary-foreground: #fff;
+
+        --warning-bg: #d4d104;
+        --warning-foreground: #000;
+
+        --danger-bg: #d25151;
+        --danger-foreground: #fff;
+
+        --success-bg: #378a27;
+        --success-foreground: #fff;
+
+        --sub-bg: #865a9f;
+        --sub-foreground: #fff;
+
+        --bits-bg: #289d89;
+        --bits-foreground: #fff;
+
+        --follow-bg: #c3466b;
+        --follow-foreground: #fff;
+    }
+
+    @media (prefers-color-scheme: light) {
+        --foreground: #111;
+        --foreground-alt: #999;
+        --foreground-rgb: 5, 5, 5;
+        --background: #f5f5f5;
+        --background-rgb: 255, 255, 255;
+        --background-alt: #fff;
+
+        --primary-bg: #458ac3;
+        --primary-foreground: #fff;
+
+        --warning-bg: #f3e24b;
+        --warning-foreground: #111;
+
+        --danger-bg: #d84f4f;
+        --danger-foreground: #fff;
+
+        --success-bg: #3caf70;
+        --success-foreground: #fff;
+
+        --sub-bg: #865a9f;
+        --sub-foreground: #fff;
+
+        --bits-bg: #289d89;
+        --bits-foreground: #fff;
+
+        --follow-bg: #c3466b;
+        --follow-foreground: #fff;
+    }
+}

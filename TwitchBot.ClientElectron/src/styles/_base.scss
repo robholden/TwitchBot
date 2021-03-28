@@ -1,0 +1,88 @@
+html,
+body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: var(--foreground);
+    background-color: var(--background);
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    line-height: 1.4;
+    overflow: hidden;
+
+    * {
+        box-sizing: border-box;
+    }
+}
+
+i {
+    font-size: 1.1em;
+}
+
+button {
+    background: none;
+    cursor: pointer;
+    padding: 0;
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.5;
+    }
+}
+
+button,
+a {
+    transition: ease 0.25s;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    color: var(--foreground);
+    outline: none;
+    box-shadow: none;
+    border: none;
+    font-weight: normal;
+}
+
+main,
+div,
+section,
+nav,
+aside {
+    position: relative;
+    display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 22px;
+}
+
+bot-commands {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+a {
+    color: var(--primary-bg);
+    text-decoration: none;
+}

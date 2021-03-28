@@ -4,6 +4,8 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -38,6 +40,14 @@ namespace TwitchBot.Server.Auth
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            Logger.LogInformation(Request.Path);
+
+            var endpoint = Context.GetEndpoint();
+            if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
+            {
+                return AuthenticateResult.NoResult();
+            }
+
             try
             {
                 if (!TryGetToken(out var token))
@@ -53,7 +63,12 @@ namespace TwitchBot.Server.Auth
                     throw new Exception("Invalid access token");
                 }
 
-                var claims = new[] { new Claim(ClaimTypes.NameIdentifier, eventToken.UserId) };
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, eventToken.UserId),
+                    new Claim(ClaimTypes.Name, eventToken.Username),
+                    new Claim(ClaimTypes.Sid, eventToken.Token)
+                };
                 var identity = new ClaimsIdentity(claims, Scheme.Name);
                 var principal = new ClaimsPrincipal(identity);
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);

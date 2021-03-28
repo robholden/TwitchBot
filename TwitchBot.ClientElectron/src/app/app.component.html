@@ -1,0 +1,52 @@
+<main *ngIf="!config.initialising && config.user" @router>
+    <nav id="nav">
+        <div class="nav-section links">
+            <div class="logo">
+                <img src="assets/logo.png" class="jello-hover" />
+                <span class="version">bot.dev</span>
+            </div>
+        </div>
+
+        <div class="nav-section links mt-a">
+            <button class="link" (click)="userService.logout()" colour="danger">Logout <i class="far fa-sign-out-alt"></i></button>
+        </div>
+    </nav>
+
+    <section>
+        <router-outlet></router-outlet>
+    </section>
+</main>
+
+<form id="loading" (submit)="login()" *ngIf="!config.initialising && !config.user" @loading>
+    <div>
+        <img src="assets/logo.png" width="100" />
+
+        <div class="form-section ta-l mt">
+            <label for="address">Server Address</label>
+            <input id="address" name="address" class="input" [(ngModel)]="address" [disabled]="loading" required />
+        </div>
+
+        <div class="form-section ta-l mt">
+            <label for="username">Username</label>
+            <input id="username" name="username" class="input" [(ngModel)]="username" [disabled]="loading" required />
+        </div>
+
+        <div class="form-section ta-l mt">
+            <label for="password">Password</label>
+            <input id="password" name="password" class="input" [(ngModel)]="password" [disabled]="loading" required />
+        </div>
+
+        <div class="mt ta-r">
+            <button class="btn-primary" type="submit" [class.icon]="loading" [disabled]="!address || !username || !password || loading">
+                <ng-container *ngIf="!loading">Login <i class="far fa-sign-in-alt"></i></ng-container>
+                <ng-container *ngIf="loading"><i class="far fa-spin fa-spinner-third"></i></ng-container>
+            </button>
+        </div>
+    </div>
+</form>
+
+<div id="loading" *ngIf="config.initialising" @loading>
+    <div>
+        <img class="jello" src="assets/logo.png" width="100" />
+    </div>
+</div>
